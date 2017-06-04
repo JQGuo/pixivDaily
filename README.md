@@ -43,6 +43,8 @@ From the console menu, you can:
     - download the top X works of the day
     - download the top X works of a specified day
 
+![alt text](https://cloud.githubusercontent.com/assets/5768263/26764563/0a2b8c8e-4937-11e7-8386-e59c440fd0c1.png "Root menu")
+
 This is straightforward and what you came here looking for.
 
 Works can be single-page illustrations or multi-page mangas. PixivDaily also
@@ -55,6 +57,8 @@ Ugoira is canvas-based, and is not supported at the moment.
 in your collection
     - explore other illustrations that are favorited by
 existing artists in your collection
+
+![alt text](https://cloud.githubusercontent.com/assets/5768263/26764565/0dd69220-4937-11e7-9608-c3d465ac50b7.png "Explore menu")
 
 This is experimental. The idea is the user is shown an image from their collection,
 which they may or may not remember having (once their collection has grown). The
