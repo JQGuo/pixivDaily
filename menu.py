@@ -1,11 +1,15 @@
 import os
-import logging
 import time
 from dl import getDailyFavs, illustPager
 from auth import exitProg
 from settings import SAVE_DIR
 
 
+'''
+Composable menu class which is only used to compose the menu tree.
+The Prompt class is a helper used to interact with it. Menu action 
+functionality should be provided through the setAction method.
+'''
 class Menu:
 
     def __init__(self, parent=None):
@@ -20,10 +24,10 @@ class Menu:
             self.children = []
 
     def printMenu(self):
-        logging.warning('Please select an option.')
+        print('Please select an option.')
 
         for index, item in enumerate(self.childInfo):
-            logging.warning('[{}] '.format(index) + item)
+            print('[%s] %s' % (index, item) )
 
     def setAction(self, action, params=None):
         self.action = action
@@ -44,6 +48,10 @@ class Menu:
         self.children.append(child)
 
 
+'''
+The Prompt class provides the loop method which is the code entrypoint
+to the menu interface.
+'''
 class Prompt:
 
     def __init__(self, root):
@@ -65,19 +73,26 @@ class Prompt:
                 os.system('clear')
                 if (type(x) is not int or
                         x not in range(len(menu.children))):
-                    logging.warning('Invalid input.\n')
+                    print('Invalid input.\n')
                 else:
                     menu = menu.children[x]
 
 
+'''
+Initializes the menus and associated functionalities for the program.
+'''
 def initMenu():
+    # Root
     root = Menu()
 
+    # - Daily Favorites
     dailyFavorites = Menu(root)
 
+    # -- Today's Daily Favorites
     dailyFavoritesToday = Menu(dailyFavorites)
     dailyFavoritesToday.setAction(getDailyFavs)
 
+    # -- Daily Favorites by Date
     dailyFavoritesByDate = Menu(dailyFavorites)
     params = {
         'specifyDate': True
@@ -86,10 +101,15 @@ def initMenu():
     dailyFavorites.addChild('Top Ranked for Today', dailyFavoritesToday)
     dailyFavorites.addChild('Top Ranked for Specified Date', dailyFavoritesByDate)
 
+    # - Explore
     explore = Menu(root)
+
+    # -- Explore Artist Illustration from Existing Artist in Collection
     exploreIllustFromExistingArtist = Menu(explore)
     exploreIllustFromExistingArtist.setAction(illustPager)
     exploreIllustFromExistingArtist.addChild('Try again with random artist?', exploreIllustFromExistingArtist)
+
+    # -- Explore Bookmarked Illustrations from Existing Artist in Collection
     exploreBookmarkFromExistingArtist = Menu(explore)
     params = {
         'bookmarks': True
@@ -99,6 +119,7 @@ def initMenu():
     explore.addChild('Explore illustrations by an existing artist.', exploreIllustFromExistingArtist)
     explore.addChild('Explore illustrations bookmarked by an existing artist.', exploreBookmarkFromExistingArtist)
 
+    # - Quit
     quit = Menu(root)
     quit.setAction(exitProg)
 
@@ -113,3 +134,4 @@ def initMenu():
 
     prompt = Prompt(root)
     prompt.loop()
+
